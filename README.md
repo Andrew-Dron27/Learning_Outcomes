@@ -1,0 +1,2 @@
+﻿Learning Outcome Tracker written in .Net Core for my software development course with Caleb Edwards.
+Application supports Roles, CRUD for users, courses and assignments uploading/downloading files with a virus check.
