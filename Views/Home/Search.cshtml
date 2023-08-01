@@ -1,0 +1,95 @@
+﻿@model Learning_Outcomes.Models.CourseInstances
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/Learning_Outcomes.css" />
+    <meta name="author" content="Caleb Edwards" />
+    <meta name="author" content="Andrew Dron" />
+    <meta name="description" content="This is the professor's view of the learning outcomes" />
+    <meta name="charset" content="" />
+    <meta name="keywords" content="" />
+    <meta charset="utf-8" />
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.css" />
+</head>
+
+<div>
+    <h4>Learning Outcomes</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CourseName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CourseName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Dept)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Dept)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Semester)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Semester)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Year)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+    </dl>
+</div>
+
+
+<body id="Course_Body">
+    <div class="tables">
+        <table class="table table-striped">
+            <thead class="bg-secondary">
+                <tr>
+                    <th>
+                        LO Name
+                    </th>
+                    <th>
+                        LO Description
+                    </th>
+                    <th>
+                        View/Edit Note
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            @{ int cellID = 0;}
+            @foreach (var item in (List<LearningOutcomeInstances>)ViewData["Outcomes"])
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        <a asp-area="" asp-controller="LearningOutcomeInstances" asp-action="NotePage" asp-route-id="@item.LearningOutcomeInstancesID"> View/Edit Outcome Note</a>
+                    </td>
+                    
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</body>
+

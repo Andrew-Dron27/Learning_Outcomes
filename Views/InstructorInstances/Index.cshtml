@@ -1,0 +1,61 @@
+﻿<!--
+Caleb Edwards
+    u0829971
+    Shows a list of all the instructors
+-->
+
+@model IEnumerable<Learning_Outcomes.Models.InstructorInstances>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/Learning_Outcomes.css" />
+    <meta name="author" content="Caleb Edwards" />
+    <meta name="description" content="This is the Department Chair's view of the learning outcomes" />
+    <meta name="charset" content="" />
+    <meta name="keywords" content="" />
+    <meta charset="utf-8" />
+</head>
+
+
+
+<body id="HV_Body">
+    <h2>Welcome Professors</h2>
+    <div class="tables">
+        <p>Click on Instructor:</p>
+        <table id="ptable">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.InstructorUserName)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="dropdown-item" asp-area="" asp-controller="InstructorInstances" asp-action="Details" asp-route-id="@item.InstructorInstancesID">
+                                @Html.DisplayFor(modelItem => item.InstructorUserName)
+                            </a>
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.InstructorInstancesID">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.InstructorInstancesID">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.InstructorInstancesID">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>

@@ -1,0 +1,15 @@
+﻿@model Learning_Outcomes.Models.LearningOutcomeInstances
+@{ 
+    var ID = Model.LearningOutcomeInstancesID;
+    var Def = 1;
+}
+<form id="uploadForm" asp-controller="LearningOutcomeInstances" asp-action="UploadDatabase"
+        enctype="multipart/form-data" onsubmit="UploadFile(this,@ID,@Def); return false;">
+    <dl>
+        <dd>
+            <input id="file" type="file" name="file" />
+        </dd>
+    </dl>
+
+    <input class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1" type="submit" value="Upload" />
+</form>

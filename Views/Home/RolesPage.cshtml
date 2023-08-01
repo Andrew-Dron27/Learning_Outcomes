@@ -1,0 +1,88 @@
+﻿<!--
+Caleb Edwards
+Andrew Dron
+    u0829971
+    u1027713
+    Shows all the users and their roles
+-->
+
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@inject RoleManager<IdentityRole> RoleManager
+
+
+<head>
+    <link rel="stylesheet" href="~/css/Learning_Outcomes.css" />
+    <meta name="author" content="Caleb Edwards" />
+    <meta name="author" content="Andrew Dron" />
+    <meta name="description" content="This is the Department Chair's view of the learning outcomes" />
+    <meta name="charset" content="" />
+    <meta name="keywords" content="" />
+    <meta charset="utf-8" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.css" />
+</head>
+
+@section Scripts{
+    <script src="~/js/Role.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+}
+
+
+
+<body id="HV_Body">
+    <h2>Welcome to the Roles Page</h2>
+    <div class="tables">
+        <table class="table table-dark">
+            <thead class="bg-danger">
+                <tr>
+                    <th>
+                        UserName
+                    </th>
+                    @{var roles = RoleManager.Roles.Select(x => x.Name).ToList(); }
+                    @foreach (var role in roles)
+                    {
+                        <th>@role</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @{var id = 1;}
+                @foreach (var user in UserManager.Users)
+                {
+                    <tr>
+                        <td>
+                            @user.UserName
+                        </td>
+                        @foreach (var role in roles)
+                        {
+                            if (await UserManager.IsInRoleAsync(user, role))
+                            {
+                                <td>
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" id="@id" checked="checked" onclick="change_role(event, '@id','@role', '@user.UserName')">
+                                        <label class="custom-control-label" for="@id"></label>
+                                        @{ id++;}
+                                    </div>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" id="@id" onclick="change_role(event, '@id','@role', '@user.UserName')">
+                                        <label class="custom-control-label" for="@id"></label>
+                                        @{ id++;}
+                                    </div>
+                                </td>
+                            }
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>

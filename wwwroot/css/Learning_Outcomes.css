@@ -1,0 +1,99 @@
+﻿/*
+        Caleb Edwards
+        U0829971
+    This is the style sheet for the professor and overview's page. This handles two different bodies
+    and tables for each page. 
+*/
+
+
+#game-canvas {
+    background-color: #222222;
+}
+
+#Course_Body {
+    background-color: rgba(44, 175, 167, 0.63);
+}
+
+/* For HomeView */
+#HV_Body {
+    background-color: rgba(11, 141, 22, 0.36);
+}
+
+h2 {
+    color: #780202;
+    font-family: Verdana;
+    font-size: 140%;
+    background-color: #808080;
+    text-align: center;
+}
+
+table {
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    border-bottom: 1px solid #000;
+}
+
+    table td {
+        padding: 20px;
+        border-top: 1px solid #000;
+    }
+
+table, th, td {
+    border: 1px solid black;
+}
+
+tr:hover {
+    background-color: #808080;
+}
+
+#HV:hover {
+    background-color: white;
+}
+
+th.course {
+    background-color: #504747;
+    color: white;
+}
+
+th.hv {
+    /*  For homeview  */
+    background-color: rgba(128, 128, 128, 0.49);
+    color: white;
+}
+
+/*
+    tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+*/
+
+
+a {
+    color: blue;
+}
+
+    a.ex {
+        color: yellow;
+    }
+
+    a.norm {
+        float: left;
+    }
+
+#jimpic {
+    float: right;
+}
+
+#lotable {
+    width: 100%;
+    text-align: center;
+}
+
+div.tables {
+    overflow-x: auto;
+}
+
+#ptable {
+    width: 100%;
+    text-align: center;
+}

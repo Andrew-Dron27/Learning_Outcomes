@@ -1,0 +1,57 @@
+﻿@model Learning_Outcomes.Models.LearningOutcomeInstances
+@{
+    ViewData["Title"] = "NotePage";
+    var isChair = User.IsInRole("Chair");
+}
+@section Scripts{
+    <script src="~/js/Note.js"></script>
+}
+<head>
+    <link rel="stylesheet" href="~/css/Learning_Outcomes.css" />
+    <meta name="author" content="Caleb Edwards" />
+    <meta name="author" content="Andrew Dron" />
+    <meta name="description" content="This is the professor's view of the learning outcomes" />
+    <meta name="charset" content="" />
+    <meta name="keywords" content="" />
+    <meta charset="utf-8" />
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.css" />
+    <script>
+        tinymce.init({
+            selector: '#note',
+            plugins: "textcolor",
+            toolbar: "forecolor backcolor"
+        });
+
+    </script>
+
+</head>
+
+<h1>Learning Outcome NotePage</h1>
+@{ var noteID = -1;
+    var note = "";
+    var LearningOutcomeID = Model.LearningOutcomeInstancesID;
+    var textColor = "";
+    @if (Model.Note != null)
+    {
+        note = Model.Note.LONote;
+        noteID = Model.Note.LearningOutcomeNoteInstancesID;
+    }
+
+    if (Model.Note.ChairEdited)
+    {
+        textColor = "class= \"text-danger\"";
+    }
+
+}
+<div>
+    <form onsubmit="submit_LO_note(event,@noteID,@LearningOutcomeID)" asp-controller="LearningOutcomeInstances" asp-action="ChangeNote" method="POST">
+        <textarea id="note" name="note">@note</textarea>
+        <input type="submit" value="Submit">
+    </form>
+    <p>
+        Date Modified: @Model.Note.DateTime;
+    </p>
+</div>
+

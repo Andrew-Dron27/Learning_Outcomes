@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Help Page";
+}
+<h2>
+    Overview
+</h2>
+<p>
+    This is the Learning Outcome Tracker application. This application is used to track Learning Outcomes for Professors. It helps them
+    keep track of what needs to be accomplished in the class, and how well of a job they have done at doing it. There are three roles to this
+    application; Admin, Chair, and Professor. There can only be one admin and as many others as wanted. We added features like a search bar, 
+    file upload, download, Pixi redered image on home screen, and a semi-functioning change role feature for logged in users. 
+    Please find the "How to Use" section below for further details. 
+</p>
+<h3>How to Use</h3>
+<p>     
+    1. Register for an account
+</p>
+<p>
+    2. Confirm Email
+</p>
+<p>
+    Professor View - The professors will have access to their courses through the views tab, where they will click on Professors.
+    This will take them to their course list. Here they will have access to leave a note, upload files, as well as view or edit
+    their previous notes. Each class has a progress bar, and when uploading files, their progress for that class will fill up. 
+    Each upload of a file will go through VirusTotal, so if you have a file that is not verified through them, it will not upload. 
+    The instructor will be able to request a role change to be a chair. 
+</p>
+<p>
+    Chair View - The chair has access to all the courses. They can view any course and download files as they see fit. They also the 
+    role in charge of approving Professor's notes. This will be the person in charge of managing all professors in a given area. The chair
+    will be able to request a role change to instructor. 
+</p>
+<p>
+    Admin - The admin is in charge of the roles. Like mentioned above there is only one admin. There has to always be one admin. So the 
+    admin cannot remove themself. They can change a role for any other user that has registered for this application. Upon registration, 
+    the user does not have any role. The admin has to add the role for them. Each user can only have one role. The admin has the ability
+    to use CRUD on any course. The admin will be able to see requested role changes and deny or approve as they see fit. 
+</p>
+<p>
+    The search bar at the top is for any registered user with a role. It will allow that user to see any courses learning outcomes
+    for reference. This way professors can see what other professors have done. This also allows for quick access for the chair or admin
+    to see how a course is coming.
+</p>
+<h4>
+    Important Aspects
+</h4>
+<p>
+    1. Ability to Upload files for a Learning Outcome through VirusTotal
+</p>
+<p>
+    2. Ability to search a course
+</p>
+<p>
+    3. Progress bars are updated upon uploads
+</p>
+<p>
+    4. Sweet alerts are implemented for the uploads
+</p>
+<p>
+    5. Pixi animation on Home Screen
+</p>
+<p>
+    6. Ability to request for a role change
+</p>

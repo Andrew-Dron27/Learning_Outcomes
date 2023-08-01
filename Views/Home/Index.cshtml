@@ -1,0 +1,153 @@
+﻿<!--
+Caleb Edwards
+    u0829971
+    Home page displaying all test links
+-->
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@inject RoleManager<IdentityRole> RoleManager
+@inject UserManager<IdentityUser> UserManager
+@model List<Learning_Outcomes.Models.RequestedRole>
+
+<head>
+    <link rel="stylesheet" href="~/css/Learning_Outcomes.css" />
+    <meta name="author" content="Caleb Edwards" />
+    <meta name="author" content="Andrew Dron" />
+    <meta name="description" content="This is the Department Chair's view of the learning outcomes" />
+    <meta name="charset" content="" />
+    <meta name="keywords" content="" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.css" />
+</head>
+
+@section Scripts{
+    <script src="~/js/Pixi.js"></script>
+    <script src="~/js/Role.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.0/pixi.min.js"></script>
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to The Learning Outcomes Tracker</h1>
+</div>
+
+
+<!--source - http://www.yeahbutisitflash.com/?p=5226 -->
+<body onload="init();">
+    <div align="center">
+        <canvas id="game-canvas" width="412" height="384"></canvas>
+    </div>
+    @{
+        if (User.IsInRole("Instructor") || User.IsInRole("Chair"))
+        {
+            <div class="tables">
+                <table class="table table-dark">
+                    <thead class="bg-danger">
+                        <tr>
+                            <th>
+                                Requested Role Change
+                            </th>
+                            @{
+                                if (User.IsInRole("Instructor"))
+                                {
+                                    <th>
+                                        Chair
+                                    </th>
+                                    <th>
+                                        <div>
+                                            <form onsubmit="Request_role(event, 'Chair', @User.Identity.Name" method="post">
+                                                <input type="submit" name="Submit" />
+                                            </form>
+                                        </div>
+                                    </th>
+                                }
+                                else if (User.IsInRole("Chair"))
+                                {
+                                    <th>
+                                        Instructor
+                                    </th>
+                                    <th>
+                                        <div>
+                                            <form onsubmit="Request_role(event, 'Instructor', @User.Identity.Name" method="post">
+                                                <input type="submit" name="Submit" />
+                                            </form>
+                                        </div>
+                                    </th>
+                                }
+                            }
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
+
+        }
+        else
+        {
+            if (User.IsInRole("Admin"))
+            {
+                <!--approve requested roles-->
+                <div class="tables">
+                    <table class="table table-dark">
+                        <thead class="bg-danger">
+                            <tr>
+                                <th>
+                                    Role Requests
+                                </th>
+                                <th>
+                                    User
+                                </th>
+                                <th>
+                                    Role Requested
+                                </th>
+                                <th>
+                                    Approve/Deny
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <!--for loop over rolerequest table-->
+                                @foreach (var requestedRoles in Model)
+                                {
+                                    <td>
+                                        @requestedRoles.Username
+                                    </td>
+                                    <td>
+                                        @requestedRoles.RoleRequested
+                                    </td>
+                                    <td>
+                                        <form onsubmit="submit_rolerequest(event, @requestedRoles.Username, @requestedRoles.RoleRequested)">
+                                            <input type="submit" value="Submit" />
+                                        </form>
+                                        <forms onsubmit="deny_rolerequest(event, @requestedRoles.Username, @requestedRoles.RoleRequested))">
+                                            <input type="submit" value="Decline" />
+                                        </forms>
+
+
+                                    </td>
+                                }
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            }
+        }
+    }
+</body>
+
+
+
+
+
+
+
+
+
+

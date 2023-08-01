@@ -1,0 +1,255 @@
+﻿<!--
+Caleb Edwards
+Andrew Dron
+    u0829971
+    u1027713
+    Shows all the uneditable LO's for the instructor and dept. chair.
+-->
+
+@model Learning_Outcomes.Models.CourseInstances
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+<head>
+    <link rel="stylesheet" href="~/css/Learning_Outcomes.css" />
+    <meta name="author" content="Caleb Edwards" />
+    <meta name="author" content="Andrew Dron" />
+    <meta name="description" content="This is the professor's view of the learning outcomes" />
+    <meta name="charset" content="" />
+    <meta name="keywords" content="" />
+    <meta charset="utf-8" />
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.css" />
+    <script>
+        tinymce.init({
+            selector: '#note'
+
+        });
+    </script>
+</head>
+@section Scripts{
+    <script src="~/js/Note.js"></script>
+    <script src="~/js/File.js"></script>
+    <script src="https://pixijs.io/pixi-sound/dist/pixi-sound.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.5/pixi.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+}
+
+<div>
+    <h4>Learning Outcomes</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CourseName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CourseName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Dept)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Dept)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Semester)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Semester)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Year)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+    </dl>
+
+    @if (User.IsInRole("Instructor"))
+    {
+        <p>Upload\Update Virus Total Api key</p>
+        <form onsubmit="uploadApiKey(event) " return false>
+            <input type="submit" value="Upload" />
+        </form>
+        <br />
+
+    }
+
+    @{ var noteID = -1;
+        var note = "";
+        var CourseID = Model.CourseInstancesID;
+        @if (Model.Note != null)
+        {
+            note = Model.Note.CourseNote;
+            noteID = Model.Note.CourseNoteInstancesID;
+        }
+        if (Model.Note.Approved)
+        {
+            <p id="Approved">Note Approved</p>
+        }
+        else
+        {
+            <p id="Approved">Note Pending Approval</p>
+        }
+    }
+
+
+    <form onsubmit="submit_note(event, @noteID, @CourseID)" asp-controller="CourseInstances" asp-action="ChangeNote" method="POST">
+        <textarea id="note" name="note">@note</textarea>
+        @{
+            if (User.IsInRole("Instructor"))
+            {
+                <input type="submit" value="Submit">
+            }
+        }
+
+    </form>
+    @{
+        if (User.IsInRole("Chair"))
+        {
+            <div>
+                <input id="approve" type="button" value="Approve" onclick="approve_note(event,@noteID)" />
+            </div>
+        }
+
+    }
+
+    <p>Date Modified: @Model.Note.DateTime</p>
+
+</div>
+
+
+
+<body id="Course_Body">
+    <div class="tables">
+        <table class="table table-striped">
+            <thead class="bg-secondary">
+                <tr>
+                    <th>
+                        LO Name
+                    </th>
+                    <th>
+                        LO Description
+                    </th>
+                    <th>
+                        Note
+                    </th>
+                    <th>
+                        Assignments/Exams Definitions
+                    </th>
+                    <th>
+                        Examples
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ int cellID = 0;}
+                @foreach (var item in (List<LearningOutcomeInstances>)ViewData["Outcomes"])
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            <a asp-area="" asp-controller="LearningOutcomeInstances" asp-action="NotePage" asp-route-id="@item.LearningOutcomeInstancesID"> View/Edit Outcome Note</a>
+                        </td>
+                        <td>
+                            @{
+                                if (item.DefenitionFile != null)
+                                {
+                                    <a asp-area="" asp-controller="LearningOutcomeInstances" asp-action="DownloadFile" asp-route-id="@item.DefenitionFile.Id">Download @item.DefenitionFile.UntrustedName</a>
+                                    <br />
+                                    <form id="deleteForm @item.DefenitionFile.Id" enctype="multipart/form-data" onsubmit="deleteFile(event,@item.DefenitionFile.Id)">
+                                        <input class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1" type="submit" value="Delete" />
+                                    </form>
+                                    <br />
+                                }
+                                else if (User.IsInRole("Instructor"))
+                                {
+                                    if ((bool)ViewData["key"] == true)
+                                    {
+                                        <form id="uploadForm @cellID" asp-controller="LearningOutcomeInstances" asp-action="UploadDatabase"
+                                              enctype="multipart/form-data" onsubmit="UploadFile(this,@item.LearningOutcomeInstancesID,1,@cellID); return false;">
+                                            <dl>
+                                                <dd>
+                                                    <input id="@cellID" type="file" name="file" />
+                                                </dd>
+                                            </dl>
+
+                                            <input class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1" type="submit" value="Upload" />
+                                        </form>
+                                        cellID++;
+                                    }
+                                    else
+
+                                    {
+                                        <p>Please upload a virus total api key in order to upload files</p>
+                                    }
+
+                                }
+
+                            }
+                        </td>
+                        <td>
+                            @{
+                                foreach (var file in item.OutcomeFiles)
+                                {
+                                    if (!file.isDef)
+                                    {
+                                        <a asp-area="" asp-controller="LearningOutcomeInstances" asp-action="DownloadFile" asp-route-id="@file.Id"> Download @file.UntrustedName</a>
+                                        <p>Score: @file.Score</p>
+                                        <form id="deleteForm @file.Id" enctype="multipart/form-data" onsubmit="deleteFile(event,@file.Id)">
+                                            <input class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1" type="submit" value="Delete" />
+                                        </form>
+                                        <br />
+                                    }
+                                }
+                                if (User.IsInRole("Instructor"))
+                                {
+                                    if ((bool)ViewData["key"] == true)
+                                    {
+                                        <form id="uploadForm @cellID" asp-controller="LearningOutcomeInstances" asp-action="UploadDatabase"
+                                              enctype="multipart/form-data" onsubmit="UploadFile(this,@item.LearningOutcomeInstancesID, 0,@cellID); return false;">
+                                            <dl>
+                                                <dd>
+                                                    <input id="@cellID" type="file" name="file" />
+                                                </dd>
+                                            </dl>
+
+                                            <input class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1" type="submit" value="Upload" />
+                                        </form>
+                                        cellID++;
+                                    }
+                                    else
+                                    {
+                                        <p>Please upload a virus total api key in order to upload files</p>
+                                    }
+
+                                }
+
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <a asp-controller="LearningOutcomeInstances" asp-action="Create">Create New</a>
+    </div>
+</body>
+
+
